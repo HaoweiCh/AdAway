@@ -1,20 +1,12 @@
 package org.adaway.util.log;
 
-import static io.sentry.SentryLevel.ERROR;
-import static io.sentry.SentryLevel.INFO;
-
 import android.app.Application;
-
-import org.adaway.helper.PreferenceHelper;
-
-import io.sentry.Breadcrumb;
-import io.sentry.Sentry;
-import io.sentry.android.core.SentryAndroid;
-import io.sentry.android.fragment.FragmentLifecycleIntegration;
-import io.sentry.android.timber.SentryTimberIntegration;
 
 /**
  * This class is a helper to initialize and configuration Sentry.
+ * <p>
+ * Crash reporting is disabled on this build: the Sentry SDK is still a compile time dependency but it is never
+ * initialized, so no event, breadcrumb or trace is ever sent to sentry.io. See {@link #isAvailable()}.
  *
  * @author Bruce BUJON (bruce.bujon(at)gmail(dot)com)
  */
@@ -27,55 +19,45 @@ public final class SentryLog {
     }
 
     /**
-     * Initialize Sentry logging client according user preferences.
+     * Initialize Sentry logging client.
+     * <p>
+     * Does nothing as crash reporting is disabled on this build.
      *
      * @param application The application instance.
      */
     public static void init(Application application) {
-        setEnabled(application, PreferenceHelper.getTelemetryEnabled(application));
+        // Crash reporting is disabled on this build: Sentry is never initialized.
     }
 
     /**
      * Initialize Sentry logging client.
+     * <p>
+     * Does nothing as crash reporting is disabled on this build.
      *
      * @param application The application instance.
      * @param enabled Whether the application is allowed to send events to Sentry or not.
      */
     public static void setEnabled(Application application, boolean enabled) {
-        if (enabled) {
-            // Initialize sentry client manually and bind it to logging
-            SentryAndroid.init(application, options -> {
-                options.addIntegration(new SentryTimberIntegration(ERROR, INFO));
-                options.addIntegration(new FragmentLifecycleIntegration(application, true, false));
-            });
-        }
+        // Crash reporting is disabled on this build: Sentry is never initialized.
     }
 
     /**
      * Record a breadcrumb.
+     * <p>
+     * Does nothing as crash reporting is disabled on this build.
      *
      * @param message The breadcrumb message.
      */
     public static void recordBreadcrumb(String message) {
-        Sentry.configureScope(scope -> {
-            Breadcrumb breadcrumb = new Breadcrumb();
-            breadcrumb.setMessage(message);
-            breadcrumb.setLevel(INFO);
-            scope.addBreadcrumb(breadcrumb);
-        });
+        // Crash reporting is disabled on this build: breadcrumbs are dropped.
     }
 
     /**
-     * Check if {@link Sentry} implementation is a stub or not.
+     * Check if Sentry crash reporting is available.
      *
-     * @return {@code true} if the runtime implementation is a stub, {@code false} otherwise.
+     * @return {@code false} as crash reporting is disabled on this build.
      */
-    public static boolean isStub() {
-        try {
-            Sentry.class.getDeclaredField("STUB");
-            return true;
-        } catch (NoSuchFieldException exception) {
-            return false;
-        }
+    public static boolean isAvailable() {
+        return false;
     }
 }

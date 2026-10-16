@@ -73,7 +73,7 @@ public class PrefsMainFragment extends PreferenceFragmentCompat {
             SentryLog.setEnabled(requireActivity().getApplication(), (boolean) newValue);
             return true;
         });
-        if (SentryLog.isStub()) {
+        if (!SentryLog.isAvailable()) {
             enableTelemetryPref.setEnabled(false);
             enableTelemetryPref.setSummary(R.string.pref_enable_telemetry_disabled_summary);
         }

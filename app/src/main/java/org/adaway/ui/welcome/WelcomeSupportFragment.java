@@ -46,7 +46,7 @@ public class WelcomeSupportFragment extends WelcomeFragment {
     }
 
     private void customizeSecondOption() {
-        if (SentryLog.isStub()) {
+        if (!SentryLog.isAvailable()) {
             showAndBindSponsorship();
         } else {
             bindTelemetry();

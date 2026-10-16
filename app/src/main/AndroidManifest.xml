@@ -165,13 +165,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- Crash reporting is disabled: no DSN is provided and the SDK is never initialized.
+             The auto-init flag is kept as a safety net should a DSN be added back. -->
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
-        <meta-data
-            android:name="io.sentry.dsn"
-            android:value="https://8dac17b798fb45e492278a678c5ab028@o209266.ingest.us.sentry.io/1331667" />
-        <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
     </application>
 
 </manifest>
